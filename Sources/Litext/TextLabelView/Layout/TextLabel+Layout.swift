@@ -217,11 +217,20 @@ extension TextLabel {
 
             for index in textLineIndices {
                 context.textPosition = lineOrigins[index]
-                CTLineDraw(lines[index], context)
+                draw(line: lines[index], at: index, in: context)
             }
             processLineDrawingActions(in: context, lineIndices: textLineIndices)
 
             context.restoreGState()
+        }
+
+        /// Draws one laid-out line at the text position already set on `context`.
+        ///
+        /// Called by `draw(in:visibleRect:)` for every visible line, with the context
+        /// flipped into CoreText's coordinate space. Override to draw a line's glyph
+        /// runs yourself — with per-run alpha, say — instead of `CTLineDraw`.
+        open func draw(line: CTLine, at _: Int, in context: CGContext) {
+            CTLineDraw(line, context)
         }
 
         /// The number of laid-out lines intersecting `rect`; `nil` counts every line.
