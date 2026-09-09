@@ -31,8 +31,15 @@ import QuartzCore
                 // pass. Call `reloadTextLayout()` to force a rebuild when the string is
                 // unchanged but state a run delegate reads from is not.
                 guard !attributedText.isEqual(to: oldValue) else { return }
-                textLayout = TextLabel.Layout(attributedString: attributedText)
+                textLayout = makeTextLayout(attributedText)
             }
+        }
+
+        /// The layout built for every new `attributedText`. Override to hand the
+        /// view a `TextLabel.Layout` subclass, for example one that draws lines
+        /// differently while keeping Litext's measurement and selection.
+        open func makeTextLayout(_ attributedText: NSAttributedString) -> TextLabel.Layout {
+            TextLabel.Layout(attributedString: attributedText)
         }
 
         open var preferredMaxLayoutWidth: CGFloat = 0 {
@@ -162,7 +169,7 @@ import QuartzCore
         public convenience init(frame: CGRect = .zero, attributedText: NSAttributedString) {
             self.init(frame: frame)
             self.attributedText = attributedText
-            textLayout = TextLabel.Layout(attributedString: attributedText)
+            textLayout = makeTextLayout(attributedText)
             invalidateTextLayout()
         }
 
