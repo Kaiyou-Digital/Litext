@@ -80,7 +80,7 @@ import QuartzCore
 
         // MARK: - Internal Properties
 
-        var textLayout: TextLabel.Layout = .init(attributedString: .init()) {
+        public var textLayout: TextLabel.Layout = .init(attributedString: .init()) {
             didSet { invalidateTextLayout() }
         }
 
